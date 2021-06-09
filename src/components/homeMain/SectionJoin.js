@@ -2,11 +2,11 @@ import React from "react";
 
 const SectionJoin = () => {
   return (
-    <section className="section-join">
+    <section className="join">
       <div className="container">
         <div className="row align-items-center">
           <div className="col-lg-8">
-            <div className="section-join__left">
+            <div className="join__left">
               <h3>Join Today</h3>
               <p>
                 Get access to maintain your own custom personal lists, track
@@ -19,7 +19,7 @@ const SectionJoin = () => {
             </div>
           </div>
           <div className="col-lg-4">
-            <ul className="section-join__right">
+            <ul className="join__right">
               <li>Enjoy TMDb ad free</li>
               <li>Maintain a personal watchlist</li>
               <li>

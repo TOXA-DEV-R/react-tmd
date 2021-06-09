@@ -8,12 +8,14 @@ header {
   background: $tmdbDarkBlue;
   z-index: 100;
   .navbar {
+    ul {
+      margin-bottom: 0;
+    }
     &__left {
       @include display-Al_center;
       .logo {
         display: block;
         width: 150px;
-        height: 20px;
         margin-right: 16px;
         img {
           width: 100%;
@@ -354,17 +356,17 @@ main .trailers {
   .col-12 {
     z-index: 10;
   }
-  .trailers-tabs {
+  .tabs {
     border: 1px solid $tmdbLightGreen;
     .tab-link {
       background: transparent;
-      span {
+      button {
         color: $tmdbWhite;
         background: transparent;
       }
       &.active {
         background: $tmdbLightGreen;
-        span {
+        button {
           color: $tmdbDarkBlue;
           background: transparent;
           -webkit-text-fill-color: unset;
@@ -631,6 +633,7 @@ main section .leaderBoard {
           }
         }
         &:last-of-type {
+          margin-bottom: 0;
           span {
             &:first-of-type {
               flex-grow: 1;

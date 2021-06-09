@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import { Progress } from "antd";
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 import axios from "axios";
 
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
@@ -12,7 +12,7 @@ const Section = (props) => {
   const [dataSecond, setDataSecond] = useState([]);
   const [globalData, setGlobalData] = useState([]);
   const [btnCount, setBtnCount] = useState(0);
-
+  console.log("props");
   const tabs = [
     { itemName: " Streaming", id: 0 },
     { itemName: "On TV", id: 1 },
@@ -29,6 +29,7 @@ const Section = (props) => {
       )
       .catch((err) => console.log(err));
     setDataFirst(response.data.results);
+    setGlobalData(response.data.results);
   };
 
   const secondFetch = async () => {
@@ -43,8 +44,6 @@ const Section = (props) => {
   useEffect(() => {
     firstFetch();
     secondFetch();
-    setGlobalData(dataFirst);
-    console.log("useEffect---00");
   }, []);
 
   useEffect(() => {
@@ -54,9 +53,11 @@ const Section = (props) => {
         setGlobalData(item);
       }
     });
-    console.log("useEffect---01");
   }, [btnCount]);
 
+  function cardId(id) {
+    console.log(id);
+  }
   return (
     <section className={props.setClass}>
       <div className="container">
@@ -87,7 +88,7 @@ const Section = (props) => {
               {globalData.map((item, index) => {
                 return (
                   <div className="card" key={index}>
-                    <a href="/" className="card__img">
+                    <a className="card__img" onClick={() => cardId(item.id)}>
                       <img
                         src={`${imgUrl}${item.poster_path}`}
                         alt={item.title}
@@ -95,7 +96,7 @@ const Section = (props) => {
                       <div className="chart-block">
                         <Progress
                           type="circle"
-                          percent={Math.floor(item.popularity / 100)}
+                          percent={Math.floor(item.vote_average * 10)}
                           strokeColor={"#4fd17b"}
                           width={38}
                           trailColor={"#1f4328"}
@@ -104,7 +105,9 @@ const Section = (props) => {
                     </a>
                     <div className="card__body">
                       <h3 className="card__title">
-                        <a href="/">{item.title ? item.title : item.name}</a>
+                        <a onClick={() => cardId(item.id)}>
+                          {item.title ? item.title : item.name}
+                        </a>
                       </h3>
                       <span className="card__date">
                         {item.release_date
@@ -122,16 +125,16 @@ const Section = (props) => {
     </section>
   );
 };
-// function mapStateToProps(state) {
-//   return {
-//     movies: state,
-//   };
-// }
+function mapStateToProps(state) {
+  return {
+    clickBtn: state,
+  };
+}
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     chengName: (idNumber) => dispatch({ type: idNumber }),
-//   };
-// }
-// connect(mapStateToProps, mapDispatchToProps)
-export default Section;
+function mapDispatchToProps(dispatch) {
+  return {
+    clickId: (idNumber) => dispatch({ type: "ID", idNumber }),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Section);

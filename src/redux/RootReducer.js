@@ -1,19 +1,16 @@
 let initState = {
-  sectionMovies: {
-    tabs: [
-      { itemName: " Streaming", id: 0 },
-      { itemName: "On TV", id: 1 },
-    ],
-    apiNames: {
-      firstName: "movie",
-      secondName: "popular",
-    },
-  },
+  clickBtn: true,
+  id: 0,
 };
 
 function RootReduder(state = initState, action) {
-  // const { type } = action;
-
+  const { type, idNumber } = action;
+  if (type === "ID") {
+    return {
+      clickBtn: false,
+      id: idNumber,
+    };
+  }
   return state;
 }
 export default RootReduder;
