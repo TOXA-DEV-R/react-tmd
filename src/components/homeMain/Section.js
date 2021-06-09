@@ -1,26 +1,62 @@
 import React, { useEffect, useState } from "react";
 import "antd/dist/antd.css";
 import { Progress } from "antd";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
+import axios from "axios";
+
+const imgUrl = "https://image.tmdb.org/t/p/w500/";
+const apiKey = "2dd08287b759101888b5a20c23399375";
 
 const Section = (props) => {
+  const [dataFirst, setDataFirst] = useState([]);
+  const [dataSecond, setDataSecond] = useState([]);
   const [globalData, setGlobalData] = useState([]);
-  const { imgUrl } = props.movies.sectionMovies.apiNames;
-  useEffect(() => {
-    function apiFunction() {
-      const { firstName, secondName, apiKey } =
-        props.movies.sectionMovies.apiNames;
-      fetch(
-        `https://api.themoviedb.org/3/${firstName}/${secondName}?api_key=${apiKey}&language=en-US&page=1`
+  const [btnCount, setBtnCount] = useState(0);
+
+  const tabs = [
+    { itemName: " Streaming", id: 0 },
+    { itemName: "On TV", id: 1 },
+  ];
+
+  if (btnCount === tabs.length) {
+    setBtnCount(0);
+  }
+
+  const firstFetch = async () => {
+    const response = await axios
+      .get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`
       )
-        .then((data) => data.json())
-        .then((res) => {
-          setGlobalData(res.results);
-        });
-    }
-    apiFunction();
+      .catch((err) => console.log(err));
+    setDataFirst(response.data.results);
+  };
+
+  const secondFetch = async () => {
+    const response = await axios
+      .get(
+        `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=en-US&page=1`
+      )
+      .catch((err) => console.log(err));
+    setDataSecond(response.data.results);
+  };
+
+  useEffect(() => {
+    firstFetch();
+    secondFetch();
+    setGlobalData(dataFirst);
+    console.log("useEffect---00");
   }, []);
-  console.log(props);
+
+  useEffect(() => {
+    const arrayData = [dataFirst, dataSecond];
+    arrayData.forEach((item, index) => {
+      if (btnCount === index) {
+        setGlobalData(item);
+      }
+    });
+    console.log("useEffect---01");
+  }, [btnCount]);
+
   return (
     <section className={props.setClass}>
       <div className="container">
@@ -29,11 +65,16 @@ const Section = (props) => {
             <div className={`${props.setClass}__content`}>
               <h2>{props.setTitle}</h2>
               <ul className="tabs">
-                {props.movies.sectionMovies.tabs.map((item, index) => {
+                {tabs.map((item, index) => {
                   return (
-                    <li className="tab-link" key={index}>
-                      <button onClick={() => props.chengName(item.id)}>
-                        {item.link}
+                    <li
+                      className={`${
+                        btnCount === index ? "tab-link active" : "tab-link"
+                      } `}
+                      key={index}
+                    >
+                      <button onClick={() => setBtnCount(btnCount + 1)}>
+                        {item.itemName}
                       </button>
                     </li>
                   );
@@ -63,9 +104,13 @@ const Section = (props) => {
                     </a>
                     <div className="card__body">
                       <h3 className="card__title">
-                        <a href="/">{item.title}</a>
+                        <a href="/">{item.title ? item.title : item.name}</a>
                       </h3>
-                      <span className="card__date">{item.release_date}</span>
+                      <span className="card__date">
+                        {item.release_date
+                          ? item.release_date
+                          : item.first_air_date}
+                      </span>
                     </div>
                   </div>
                 );
@@ -77,16 +122,16 @@ const Section = (props) => {
     </section>
   );
 };
-function mapStateToProps(state) {
-  return {
-    movies: state,
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     movies: state,
+//   };
+// }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    chengName: (index) => dispatch({ type: index }),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Section);
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     chengName: (idNumber) => dispatch({ type: idNumber }),
+//   };
+// }
+// connect(mapStateToProps, mapDispatchToProps)
+export default Section;
