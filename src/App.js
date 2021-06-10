@@ -8,6 +8,7 @@ import "./sass/basic.scss";
 
 const App = (props) => {
   let basicCountrol = props.watchBtn.clickBtn;
+  console.log(props);
   return (
     <>
       <Header />

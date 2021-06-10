@@ -12,7 +12,7 @@ const Section = (props) => {
   const [dataSecond, setDataSecond] = useState([]);
   const [globalData, setGlobalData] = useState([]);
   const [btnCount, setBtnCount] = useState(0);
-  console.log("props");
+
   const tabs = [
     { itemName: " Streaming", id: 0 },
     { itemName: "On TV", id: 1 },
@@ -88,7 +88,10 @@ const Section = (props) => {
               {globalData.map((item, index) => {
                 return (
                   <div className="card" key={index}>
-                    <a className="card__img" onClick={() => cardId(item.id)}>
+                    <a
+                      className="card__img"
+                      onClick={() => props.clickId(item.id)}
+                    >
                       <img
                         src={`${imgUrl}${item.poster_path}`}
                         alt={item.title}
@@ -105,7 +108,7 @@ const Section = (props) => {
                     </a>
                     <div className="card__body">
                       <h3 className="card__title">
-                        <a onClick={() => cardId(item.id)}>
+                        <a onClick={() => props.clickId(item.id)}>
                           {item.title ? item.title : item.name}
                         </a>
                       </h3>
