@@ -55,9 +55,6 @@ const Section = (props) => {
     });
   }, [btnCount]);
 
-  function cardId(id) {
-    console.log(id);
-  }
   return (
     <section className={props.setClass}>
       <div className="container">
@@ -128,6 +125,7 @@ const Section = (props) => {
     </section>
   );
 };
+
 function mapStateToProps(state) {
   return {
     clickBtn: state,

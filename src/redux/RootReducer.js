@@ -1,6 +1,7 @@
 let initState = {
   clickBtn: true,
   id: 0,
+  controlSearching: false,
 };
 
 function RootReduder(state = initState, action) {
@@ -9,6 +10,11 @@ function RootReduder(state = initState, action) {
     return {
       clickBtn: false,
       id: idNumber,
+    };
+  }
+  if (type === "HEADER") {
+    return {
+      clickBtn: action.booleanBtn,
     };
   }
   return state;

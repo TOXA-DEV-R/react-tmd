@@ -1,8 +1,9 @@
 import React from "react";
 import logoSvg from "../img/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg";
 import AnchorLink from "react-anchor-link-smooth-scroll";
+import { connect } from "react-redux";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <header>
       <div className="container">
@@ -14,7 +15,12 @@ const Header = () => {
               </AnchorLink>
               <ul className="navbar__menu">
                 <li>
-                  <button className="navbar__link">Movies</button>
+                  <button
+                    className="navbar__link"
+                    onClick={() => props.clickId(true)}
+                  >
+                    Movies
+                  </button>
                   <ul className="menu-init">
                     <li>
                       <AnchorLink href="/" className="menu-init__link">
@@ -130,4 +136,10 @@ const Header = () => {
   );
 };
 
-export default Header;
+function mapDispatchToProps(dispatch) {
+  return {
+    clickId: (booleanBtn) => dispatch({ type: "HEADER", booleanBtn }),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Header);

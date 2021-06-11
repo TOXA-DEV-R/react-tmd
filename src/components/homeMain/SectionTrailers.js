@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
@@ -8,6 +8,7 @@ const SectionTrailers = () => {
   const [dataSecond, setDataSecond] = useState([]);
   const [globalData, setGlobalData] = useState([]);
   const [btnCount, setBtnCount] = useState(0);
+  const cardImg = useRef(null);
 
   const tabs = [
     { itemName: " Streaming", id: 0 },
@@ -48,8 +49,14 @@ const SectionTrailers = () => {
       }
     });
   }, [btnCount]);
+
+  function imgCard(img) {
+    cardImg.current.style.background = `url(${img}) no-repeat center
+    center / cover`;
+  }
+
   return (
-    <div className="trailers">
+    <div className="trailers" ref={cardImg}>
       <div className="container">
         <div className="row">
           <div className="col-12">
@@ -82,6 +89,9 @@ const SectionTrailers = () => {
                       <img
                         src={`${imgUrl}${item.poster_path}`}
                         alt={item.title}
+                        onMouseOver={() =>
+                          imgCard(`${imgUrl}${item.poster_path}`)
+                        }
                       />
                       <button className="btn-play">
                         <i className="fa fa-play" aria-hidden="true"></i>

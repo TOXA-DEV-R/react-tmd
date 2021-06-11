@@ -5,14 +5,20 @@ import Footer from "./containers/Footer";
 import Header from "./containers/Header";
 import { connect } from "react-redux";
 import "./sass/basic.scss";
+import SearchingPage from "./components/SearchingPage";
 
 const App = (props) => {
   let basicCountrol = props.watchBtn.clickBtn;
-  console.log(props);
+  let bascicMain;
+  if (!props.watchBtn.controlSearching) {
+    bascicMain = <SearchingPage />;
+  } else {
+    bascicMain = basicCountrol ? <HomeMain /> : <SinglPage />;
+  }
   return (
     <>
       <Header />
-      {basicCountrol ? <HomeMain /> : <SinglPage />}
+      {bascicMain}
       <Footer />
     </>
   );
