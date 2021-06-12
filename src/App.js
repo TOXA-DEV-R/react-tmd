@@ -10,7 +10,7 @@ import SearchingPage from "./components/SearchingPage";
 const App = (props) => {
   let basicCountrol = props.watchBtn.clickBtn;
   let bascicMain;
-  if (!props.watchBtn.controlSearching) {
+  if (props.watchBtn.controlSearching) {
     bascicMain = <SearchingPage />;
   } else {
     bascicMain = basicCountrol ? <HomeMain /> : <SinglPage />;

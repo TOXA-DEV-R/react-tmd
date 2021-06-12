@@ -23,8 +23,6 @@ const SinglPage = (props) => {
     return () => cleanup(secondFetch);
   }, []);
 
-  console.log(globalData);
-
   const {
     backdrop_path,
     original_title,
